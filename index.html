@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cablex – Link utili</title>
+<style>
+  /* =========================================================
+     COLORI E STILE  (modifica qui per adattare la grafica)
+     ========================================================= */
+  :root {
+    --primario:   #0B2A4A;   /* blu scuro cablex – verificare con brand guide */
+    --accento:    #00A3E0;   /* azzurro accento – verificare con brand guide */
+    --sfondo:     #F4F6F9;
+    --card:       #FFFFFF;
+    --testo:      #1A1A1A;
+    --testo-soft: #5A6573;
+    --raggio:     12px;
+    --font: "TheSans Swisscom", "Segoe UI", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font); background: var(--sfondo); color: var(--testo); line-height: 1.5; }
+
+  /* Header */
+  header { background: var(--primario); color: #fff; padding: 2rem 1.5rem 3.5rem; }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 1rem; }
+  .brand img { height: 42px; }
+  .brand .logo-testo { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+  .brand .logo-testo span { color: var(--accento); }
+  header h1 { font-size: 1.6rem; font-weight: 600; margin-top: 1.5rem; }
+  header p { opacity: .8; }
+
+  /* Barra strumenti */
+  .toolbar { background: var(--card); border-radius: var(--raggio); box-shadow: 0 4px 16px rgba(0,0,0,.08);
+             padding: 1rem; margin: -2rem auto 2rem; display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .toolbar input { flex: 1 1 260px; padding: .7rem 1rem; border: 1px solid #D5DBE3; border-radius: 8px; font: inherit; }
+  .toolbar input:focus { outline: 2px solid var(--accento); border-color: transparent; }
+  .filtri { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .filtri button { border: 1px solid #D5DBE3; background: #fff; padding: .45rem .9rem; border-radius: 999px;
+                   cursor: pointer; font: inherit; font-size: .9rem; }
+  .filtri button.attivo { background: var(--primario); color: #fff; border-color: var(--primario); }
+
+  /* Categorie e card */
+  main { padding: 0 1.5rem 3rem; }
+  section { margin-bottom: 2.5rem; }
+  section h2 { font-size: 1.25rem; color: var(--primario); margin-bottom: 1rem;
+               padding-left: .75rem; border-left: 4px solid var(--accento); }
+  .griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .card { background: var(--card); border-radius: var(--raggio); padding: 1.1rem 1.2rem; text-decoration: none;
+          color: inherit; display: flex; flex-direction: column; gap: .4rem; border: 1px solid transparent;
+          box-shadow: 0 1px 4px rgba(0,0,0,.06); transition: transform .15s, box-shadow .15s, border-color .15s; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.10); border-color: var(--accento); }
+  .card .titolo { font-weight: 600; display: flex; align-items: center; gap: .5rem; }
+  .card .desc { font-size: .9rem; color: var(--testo-soft); flex: 1; }
+  .badge { align-self: flex-start; font-size: .75rem; font-weight: 600; padding: .15rem .6rem;
+           border-radius: 999px; color: #fff; }
+  .vuoto { text-align: center; color: var(--testo-soft); padding: 3rem 0; }
+
+  footer { text-align: center; font-size: .85rem; color: var(--testo-soft); padding: 2rem 1rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand" id="brand"></div>
+    <h1 id="titolo"></h1>
+    <p id="sottotitolo"></p>
+  </div>
+</header>
+
+<div class="wrap" style="padding: 0 1.5rem;">
+  <div class="toolbar">
+    <input type="search" id="cerca" placeholder="Cerca un tool o una pagina…  (premi / )">
+    <div class="filtri" id="filtri"></div>
+  </div>
+</div>
+
+<main class="wrap" id="contenuto"></main>
+<footer id="footer"></footer>
+
+<script>
+/* =================================================================
+   CONFIGURAZIONE  –  MODIFICA SOLO QUESTA PARTE
+   ================================================================= */
+
+const CONFIG = {
+  titolo:      "Link utili per i collaboratori",
+  sottotitolo: "Tutti i tool e le pagine importanti in un unico posto",
+  logo:        "",            // es. "logo-cablex.svg" – se vuoto mostra il logo testuale
+  aggiornato:  "21.10.2026",
+  contatto:    "intranet@cablex.ch"   // chi contattare per aggiunte/modifiche
+};
+
+/* Tipologie: chiave → etichetta e colore del badge */
+const TIPOLOGIE = {
+  tool:       { label: "Tool",           colore: "#0B2A4A" },
+  form:       { label: "Form",           colore: "#00A3E0" }, 
+  doc:        { label: "Documentazione", colore: "#00A3E0" },
+  formazione: { label: "Formazione",     colore: "#2E9E5B" },
+  portale:    { label: "Portale",        colore: "#8A4FBF" },
+  supporto:   { label: "Supporto",       colore: "#E07B00" }
+};
+
+/* Categorie e link.
+   Per aggiungere un link copia una riga { ... } e cambia i valori.
+   tipo = una delle chiavi di TIPOLOGIE qui sopra.                     */
+const CATEGORIE = [
+  {
+    nome: "Lavoro quotidiano", icona: "🛠️",
+    link: [
+      { titolo: "FORMS Ordinazione materiale CFS", url: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=h1tONsfBDUKb7sNdGbVXoTSdFEWZoDtBqq9kVWqIoNVURU9LTjFEUDJIQ01CRDI5QldGOU5PVlVKRS4u", descrizione: "Materiale di consumo CFS, patch kopa, bobine precablate", tipo: "form" },
+      { titolo: "Registrazione ore",       url: "#", descrizione: "Ore di lavoro, spese e assenze",      tipo: "tool" },
+      { titolo: "Ordinazione materiale",   url: "#", descrizione: "Catalogo e ordinazioni di magazzino", tipo: "portale" }
+    ]
+  },
+  {
+    nome: "Sicurezza e qualità", icona: "🦺",
+    link: [
+      { titolo: "Direttive di sicurezza",  url: "#", descrizione: "Regole e checklist per il cantiere", tipo: "doc" },
+      { titolo: "Segnalazione incidenti",  url: "#", descrizione: "Segnala incidenti e quasi-incidenti", tipo: "tool" }
+    ]
+  },
+  {
+    nome: "HR e formazione", icona: "🎓",
+    link: [
+      { titolo: "Portale HR",              url: "#", descrizione: "Buste paga, dati personali, documenti", tipo: "portale" },
+      { titolo: "Corsi e-learning",        url: "#", descrizione: "Formazioni obbligatorie e facoltative", tipo: "formazione" }
+    ]
+  },
+  {
+    nome: "IT e supporto", icona: "💻",
+    link: [
+      { titolo: "Service Desk IT",         url: "#", descrizione: "Apri un ticket o richiedi assistenza", tipo: "supporto" },
+      { titolo: "Reset password",          url: "#", descrizione: "Reimposta la password del tuo account", tipo: "supporto" }
+    ]
+  },
+  {
+    nome: "Azienda", icona: "🏢",
+    link: [
+      { titolo: "Sito cablex",             url: "https://www.cablex.ch", descrizione: "Sito ufficiale di cablex", tipo: "portale" }
+    ]
+  }
+];
+
+/* =================================================================
+   FINE CONFIGURAZIONE  –  sotto non serve modificare nulla
+   ================================================================= */
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+let filtroAttivo = "tutti";
+const $ = id => document.getElementById(id);
+
+function intestazione() {
+  document.title = "cablex – " + CONFIG.titolo;
+  $("brand").innerHTML = CONFIG.logo
+    ? `<img src="${esc(CONFIG.logo)}" alt="cablex">`
+    : `<div class="logo-testo">cable<span>x</span></div>`;
+  $("titolo").textContent = CONFIG.titolo;
+  $("sottotitolo").textContent = CONFIG.sottotitolo;
+  $("footer").innerHTML = `Ultimo aggiornamento: ${esc(CONFIG.aggiornato)} · ` +
+    `Aggiunte o correzioni: <a href="mailto:${esc(CONFIG.contatto)}">${esc(CONFIG.contatto)}</a>`;
+}
+
+function creaFiltri() {
+  const voci = [["tutti", "Tutti"], ...Object.entries(TIPOLOGIE).map(([k, v]) => [k, v.label])];
+  $("filtri").innerHTML = voci.map(([k, l]) =>
+    `<button data-tipo="${k}" class="${k === filtroAttivo ? "attivo" : ""}">${esc(l)}</button>`).join("");
+  $("filtri").querySelectorAll("button").forEach(b => b.onclick = () => {
+    filtroAttivo = b.dataset.tipo; creaFiltri(); render();
+  });
+}
+
+function render() {
+  const q = $("cerca").value.trim().toLowerCase();
+  const html = CATEGORIE.map(cat => {
+    const items = cat.link.filter(l =>
+      (filtroAttivo === "tutti" || l.tipo === filtroAttivo) &&
+      (l.titolo + " " + (l.descrizione || "")).toLowerCase().includes(q));
+    if (!items.length) return "";
+    return `<section>
+      <h2>${esc(cat.icona || "")} ${esc(cat.nome)}</h2>
+      <div class="griglia">${items.map(card).join("")}</div>
+    </section>`;
+  }).join("");
+  $("contenuto").innerHTML = html || `<p class="vuoto">Nessun risultato trovato.</p>`;
+}
+
+function card(l) {
+  const t = TIPOLOGIE[l.tipo] || { label: l.tipo || "Altro", colore: "#888" };
+  const esterno = /^https?:/.test(l.url) ? ' target="_blank" rel="noopener"' : "";
+  return `<a class="card" href="${esc(l.url)}"${esterno}>
+    <span class="titolo">${esc(l.titolo)}</span>
+    <span class="desc">${esc(l.descrizione)}</span>
+    <span class="badge" style="background:${esc(t.colore)}">${esc(t.label)}</span>
+  </a>`;
+}
+
+$("cerca").addEventListener("input", render);
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== $("cerca")) { e.preventDefault(); $("cerca").focus(); }
+});
+
+intestazione();
+creaFiltri();
+render();
+</script>
+</body>
+</html>
