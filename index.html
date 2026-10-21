@@ -99,7 +99,7 @@ const TIPOLOGIE = {
   tool:       { label: "Tool",           colore: "#0B2A4A" },
   forms:      { label: "Forms",          colore: "#07702C" }, 
   doc:        { label: "Documentazione", colore: "#00A3E0" },
-  aoo:        { label: "Applicazioni",   colore: "#444FF2" },
+  app:        { label: "Applicazioni",   colore: "#444FF2" },
   formazione: { label: "Formazione",     colore: "#2E9E5B" },
   portale:    { label: "Portale",        colore: "#8A4FBF" },
   supporto:   { label: "Supporto",       colore: "#E07B00" }
@@ -120,7 +120,9 @@ const CATEGORIE = [
     nome: "Tools", icona: "🔩",
     link: [
       { titolo: "Clima 2",  url: "https://clima2.scapp.swisscom.com/login", descrizione: "Tool di analisi di rete e tracciati di linea", tipo: "tool" },
-      { titolo: "Clima 3",  url: "https://clima3.scapp-corp.swisscom.com/login", descrizione: "Tool di analisi di rete LAN per cliente swisscom", tipo: "tool" }
+      { titolo: "Clima 3",  url: "https://clima3.scapp-corp.swisscom.com/login", descrizione: "Tool di analisi di rete LAN per clienti Swisscom", tipo: "tool" },
+      { titolo: "mRic RLA",  url: "https://wfmweb.swisscom.ch:450/mRic-app/mric", descrizione: "mRic tool di pianificazione RLA: FIO, ", tipo: "tool" }
+      { titolo: "mRic Sunrise",  url: "https://mlog.upc.ch/mRic-app/mric?newUI", descrizione: "mRic tool di pianificazione guasti Sunrise, ", tipo: "tool" }
     ]
   },
   {
@@ -131,9 +133,11 @@ const CATEGORIE = [
     ]
   },
   {
-    nome: "IT e supporto", icona: "💻",
+    nome: "Applicazioni", icona: "💻",
     link: [
-      { titolo: "Service Desk IT",         url: "#", descrizione: "Apri un ticket o richiedi assistenza", tipo: "supporto" },
+      { titolo: "MOT RLA Android",         url: "https://wfmweb.swisscom.ch:450/MOT/getCurrentVersion?app-type=droid", descrizione: "Download applicazione MOT RLA Android gestione ticket: FIO", tipo: "app" },
+      { titolo: "MOT RLA iOS",             url: "https://wfmweb.swisscom.ch:450/MOT/getCurrentVersion?app-type=ios", descrizione: "Download applicazione MOT RLA iOS gestione ticket: FIO", tipo: "app" },
+      { titolo: "MOT Sunrise",             url: "https://mlog.upc.ch/MOT-app/Cablecom-Droid-Mot.apk", descrizione: "Download applicazione MOT Sunrise", tipo: "app" }
       { titolo: "Reset password",          url: "#", descrizione: "Reimposta la password del tuo account", tipo: "supporto" }
     ]
   },
