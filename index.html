@@ -9,7 +9,7 @@
      COLORI E STILE  (modifica qui per adattare la grafica)
      ========================================================= */
   :root {
-    --primario:   #0B2A4A;   /* blu scuro cablex – verificare con brand guide */
+    --primario:   #C42935;   /* blu scuro cablex – verificare con brand guide */
     --accento:    #00A3E0;   /* azzurro accento – verificare con brand guide */
     --sfondo:     #F4F6F9;
     --card:       #FFFFFF;
@@ -97,8 +97,9 @@ const CONFIG = {
 /* Tipologie: chiave → etichetta e colore del badge */
 const TIPOLOGIE = {
   tool:       { label: "Tool",           colore: "#0B2A4A" },
-  form:       { label: "Form",           colore: "#00A3E0" }, 
+  forms:      { label: "Forms",          colore: "#07702C" }, 
   doc:        { label: "Documentazione", colore: "#00A3E0" },
+  aoo:        { label: "Applicazioni",   colore: "#444FF2" },
   formazione: { label: "Formazione",     colore: "#2E9E5B" },
   portale:    { label: "Portale",        colore: "#8A4FBF" },
   supporto:   { label: "Supporto",       colore: "#E07B00" }
@@ -111,15 +112,14 @@ const CATEGORIE = [
   {
     nome: "Lavoro quotidiano", icona: "🛠️",
     link: [
-      { titolo: "FORMS Ordinazione materiale CFS", url: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=h1tONsfBDUKb7sNdGbVXoTSdFEWZoDtBqq9kVWqIoNVURU9LTjFEUDJIQ01CRDI5QldGOU5PVlVKRS4u", descrizione: "Materiale di consumo CFS, patch kopa, bobine precablate", tipo: "form" },
-      { titolo: "Registrazione ore",       url: "#", descrizione: "Ore di lavoro, spese e assenze",      tipo: "tool" },
-      { titolo: "Ordinazione materiale",   url: "#", descrizione: "Catalogo e ordinazioni di magazzino", tipo: "portale" }
+      { titolo: "Ordinazione materiale CFS", url: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=h1tONsfBDUKb7sNdGbVXoTSdFEWZoDtBqq9kVWqIoNVURU9LTjFEUDJIQ01CRDI5QldGOU5PVlVKRS4u", descrizione: "Materiale di consumo CFS, patch kopa, bobine precablate", tipo: "forms" },
+      { titolo: "Segnalazione qualità FCO", url: "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=h1tONsfBDUKb7sNdGbVXoXf5nwZiextIvcvWkCgvWZhUM1BONjFaQUI2RTZOMkhFWjFTWDZFSTE0NC4u", descrizione: "Segnalazione mancaza di qualità e errori FCO e FCO/KOPA",      tipo: "forms" },
     ]
   },
   {
-    nome: "Sicurezza e qualità", icona: "🦺",
+    nome: "Tools", icona: "🔩",
     link: [
-      { titolo: "Direttive di sicurezza",  url: "#", descrizione: "Regole e checklist per il cantiere", tipo: "doc" },
+      { titolo: "Clima 2",  url: "https://clima2.scapp.swisscom.com/login", descrizione: "Tool di analisi di rete e tracciati di linea", tipo: "tool" },
       { titolo: "Segnalazione incidenti",  url: "#", descrizione: "Segnala incidenti e quasi-incidenti", tipo: "tool" }
     ]
   },
